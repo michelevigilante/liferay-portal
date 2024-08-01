@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {FrameLocator, Locator, Page} from '@playwright/test';
+import {FrameLocator, Locator, Page, expect} from '@playwright/test';
 
 import {waitForSuccessAlert} from '../../utils/waitForSuccessAlert';
 import {ApplicationsMenuPage} from '../product-navigation-applications-menu/ApplicationsMenuPage';
@@ -151,7 +151,10 @@ export class CommerceAdminChannelDetailsPage {
 			});
 		};
 		this.isActive = async (tableName: string) => {
-			return (await this.sidePanelFrame(tableName)).getByLabel('Active');
+			return (await this.sidePanelFrame(tableName))
+				.locator('.toggle-switch')
+				.filter({hasText: 'Active'})
+				.getByRole('checkbox');
 		};
 		this.sidePanelFrameButton = async (
 			buttonName: string,
@@ -214,8 +217,10 @@ export class CommerceAdminChannelDetailsPage {
 
 	async activateChannelConfiguration(name: string, tableName: string) {
 		await (await this.generalCommerceAdminChannelTableLink(name)).click();
-
-		await (await this.isActive(tableName)).check();
+		await this.page.waitForLoadState('domcontentloaded');
+		await (await this.isActive(tableName)).focus();
+		await expect(await this.isActive(tableName)).toBeFocused();
+		await (await this.isActive(tableName)).setChecked(true);
 		await (await this.frameSaveButton(false, tableName)).click();
 		await (await this.closeSidePanelFrame(false, tableName)).click();
 	}

@@ -97,18 +97,16 @@ test('LPD-26244 Split order items are shown on admin order details page when sho
 		await commerceAdminChannelsPage.channelsTableRowLink(channel.name)
 	).click();
 
-	await (
-		await commerceAdminChannelDetailsPage.showSeparateOrderItemsToggle
-	).check();
+	await commerceAdminChannelDetailsPage.showSeparateOrderItemsToggle.click();
 
 	await expect(
-		await commerceAdminChannelDetailsPage.showSeparateOrderItemsToggle
+		commerceAdminChannelDetailsPage.showSeparateOrderItemsToggle
 	).toBeChecked();
 
-	await (await commerceAdminChannelDetailsPage.saveButton).click();
+	await commerceAdminChannelDetailsPage.saveButton.click();
 
 	await expect(
-		await commerceAdminChannelDetailsPage.showSeparateOrderItemsToggle
+		commerceAdminChannelDetailsPage.showSeparateOrderItemsToggle
 	).toBeChecked();
 
 	const catalog = await apiHelpers.headlessCommerceAdminCatalog.postCatalog({
@@ -215,8 +213,6 @@ test('COMMERCE-11888. As a supplier user, I can edit the order details, payments
 	commerceAdminOrdersPage,
 	page,
 }) => {
-	test.setTimeout(180000);
-
 	const {site} = await miniumSetUp(apiHelpers);
 
 	const accountBusiness = await apiHelpers.headlessAdminUser.postAccount({
@@ -530,6 +526,13 @@ test('COMMERCE-11888. As a supplier user, I can edit the order details, payments
 			'Edit'
 		)
 	).click();
+	await page.waitForLoadState('domcontentloaded');
+	await (
+		await commerceAdminOrderDetailsPage.paymentMethodRadioButton('PayPal')
+	).focus();
+	await expect(
+		await commerceAdminOrderDetailsPage.paymentMethodRadioButton('PayPal')
+	).toBeFocused();
 	await (
 		await commerceAdminOrderDetailsPage.paymentMethodRadioButton('PayPal')
 	).check();

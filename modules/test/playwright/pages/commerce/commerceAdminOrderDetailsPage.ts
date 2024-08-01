@@ -77,7 +77,7 @@ export class CommerceAdminOrderDetailsPage extends CommerceDNDTablePage {
 			return this.editPaymentMethodFrame
 				.locator('li')
 				.filter({hasText: paymentMethod})
-				.getByLabel('');
+				.getByRole('radio');
 		};
 		this.reorderButton = page.getByRole('button', {
 			exact: true,
