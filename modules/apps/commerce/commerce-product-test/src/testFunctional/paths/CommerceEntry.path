@@ -872,7 +872,7 @@
 </tr>
 <tr>
 	<td>TABLE_ENTRY_ROW_FIELD_GENERIC</td>
-	<td>//div[@class= 'dnd-tr'][${key_rowIndex}]//div[@class='dnd-td'][${key_columnIndex}]</td>
+	<td>//div[contains(@class,'dnd-tr')][${key_rowIndex}]//div[contains(@class,'dnd-td')][${key_columnIndex}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -902,7 +902,7 @@
 </tr>
 <tr>
 	<td>TABLE_ELIGIBILITY_ACCOUNT_GROUPS</td>
-	<td>//div[@class='dnd-td' and contains(text(),'${key_entryName}')]</td>
+	<td>//*[contains(@class,'dnd-td') and contains(text(),'${key_entryName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -942,7 +942,7 @@
 </tr>
 <tr>
 	<td>TABLE_ASSERT_TWO_COLUMNS_ELLIPSIS</td>
-	<td>//div[contains(@id,'${key_table}')]//div[1][@class='dnd-td' and contains(.,'${key_firstColumnValue}')]/following::div[@class='dnd-td' and contains (.,'${key_secondColumnValue}')]/following::div[@class='dropdown']</td>
+	<td>//div[contains(@id,'${key_table}')]//*[contains(@class,'dnd-td') and text() = '${key_firstColumnValue}']/following::div[contains(@class,'dnd-td') and contains (., '${key_secondColumnValue}') ]//following::div[@class='dropdown']</td>
 	<td></td>
 </tr>
 <tr>
@@ -1513,7 +1513,7 @@
 </tr>
 <tr>
 	<td>TABLE_SEARCH_BY_NAME_AND_COLUMN_CONTENT</td>
-	<td>//div[@class='dnd-td' and contains(.,'${key_productName}')]/following-sibling::div[${key_columnNumber}][contains(text(),'${key_value}')]</td>
+	<td>//*[contains(@class,'dnd-td') and contains(.,'${key_productName}')]/following-sibling::div[${key_columnNumber}][contains(text(),'${key_value}')]</td>
 	<td></td>
 </tr>
 <tr>

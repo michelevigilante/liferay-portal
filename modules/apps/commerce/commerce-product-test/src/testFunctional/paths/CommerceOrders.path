@@ -157,7 +157,7 @@
 </tr>
 <tr>
 	<td>ORDER_QUANTITY_IN_SHIPMENT_BY_WAREHOUSE</td>
-	<td>//div[contains(text(),'${key_warehouseName}')]//following-sibling::div[@class = 'dnd-td']//following-sibling::div[@class = 'dnd-td']//input[contains(@class, 'form-control')]</td>
+	<td>//div[contains(text(),'${key_warehouseName}')]//following-sibling::div//following-sibling::div//input[contains(@class, 'form-control')]</td>
 	 <td></td>
 </tr>
 <tr>
