@@ -152,12 +152,12 @@
 </tr>
 <tr>
 	<td>ORDER_ELLIPSIS_BY_STATUS</td>
-	<td>//strong[contains(text(), '${key_orderStatus}')]//../../../../div//*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
+	<td>//strong[contains(text(), '${key_orderStatus}')]//../../../../td//*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ORDER_QUANTITY_IN_SHIPMENT_BY_WAREHOUSE</td>
-	<td>//div[contains(text(),'${key_warehouseName}')]//following-sibling::div//following-sibling::div//input[contains(@class, 'form-control')]</td>
+	<td>//td[contains(text(),'${key_warehouseName}')]//following-sibling::td//following-sibling::td//input[contains(@class, 'form-control')]</td>
 	 <td></td>
 </tr>
 <tr>
