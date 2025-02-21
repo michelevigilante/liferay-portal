@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {CURRENT_ORDER_UPDATED,} from '../../utilities/eventsDefinitions';
 import ClayButton from '@clayui/button';
 import DropDown from '@clayui/drop-down';
-import {CommerceServiceProvider} from 'commerce-frontend-js';
+import {CommerceServiceProvider, CommerceFrontendUtils} from 'commerce-frontend-js';
 import {openToast} from 'frontend-js-web';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
@@ -15,6 +14,8 @@ import {
 	openCurrencyConfirmationModal,
 	setCommerceCurrencyCookie
 } from "../util";
+
+const {Events} = CommerceFrontendUtils;
 
 const DeliveryCatalogResource =
 	CommerceServiceProvider.DeliveryCatalogAPI('v1');
@@ -27,10 +28,10 @@ function CurrencySelector({
 }) {
 
 	const [availableCurrencies, setAvailableCurrencies] = useState(null);
-	const [currentCommerceOrderId, setCurrentCommerceOrderId] = useState(commerceOrderId);
+	const [currentCommerceOrderId, setCurrentCommerceOrderId] = useState(parseInt(commerceOrderId, 10));
 	const [selectedCurrency, setSelectedCurrency] = useState(null)
 
-	const setCurrencyCookie = useCallback(() => {
+	const setCurrencyCookie = useCallback(async () => {
 		const currentCommerceCurrencyCode = getCommerceCurrencyCookie();
 
 		if (!currentCommerceCurrencyCode) {
@@ -45,7 +46,7 @@ function CurrencySelector({
 		if (hasCurrencyChanged && currentCommerceOrderId) {
 			const {accountId} = Liferay.CommerceContext.account;
 
-			openCurrencyConfirmationModal({
+			const isConfirmed = await openCurrencyConfirmationModal({
 				accountId,
 				commerceChannelId,
 				currencyCode: selectedCurrency.code,
@@ -54,9 +55,14 @@ function CurrencySelector({
 						DEFAULT_ORDER_DETAILS_PORTLET_ID),
 				orderDetailURL: commerceOrderDetailBaseURL,
 				orderTypes,
-			})
+			});
+			if (!isConfirmed) {
+				setSelectedCurrency(currentCommerceCurrencyCode);
+				//TODO Manage store cookie
+			}
 		}
 		else if (hasCurrencyChanged && !currentCommerceOrderId) {
+			setCommerceCurrencyCookie(currentCommerceCurrencyCode);
 			window.location.reload();
 		}
 }, [currentCommerceOrderId, selectedCurrency]);
@@ -68,7 +74,7 @@ function CurrencySelector({
 					if (currencies.length) {
 						setAvailableCurrencies(currencies);
 
-						const {currencyCode} = Liferay.CommerceContext.currency;
+						const currencyCode = getCommerceCurrencyCookie() ?? Liferay.CommerceContext.currency.currencyCode;
 
 						setSelectedCurrency(currencies.find(
 							({code}) => code === currencyCode));
@@ -106,10 +112,10 @@ function CurrencySelector({
 			);
 		}
 
-		Liferay.on(CURRENT_ORDER_UPDATED, onOrderChange);
+		Liferay.on(Events.CURRENT_ORDER_UPDATED, onOrderChange);
 
 		return () => {
-			Liferay.detach(CURRENT_ORDER_UPDATED, onOrderChange);
+			Liferay.detach(Events.CURRENT_ORDER_UPDATED, onOrderChange);
 		};
 	}, [
 		availableCurrencies,

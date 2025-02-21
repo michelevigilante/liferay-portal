@@ -17,5 +17,5 @@ page import="com.liferay.portal.kernel.util.HashMapBuilder" %>
 long commerceChannelId = (long)request.getAttribute("liferay-commerce:currency-selector:commerceChannelId");
 String commerceOrderDetailBaseURL = (String)request.getAttribute("liferay-commerce:currency-selector:commerceOrderDetailBaseURL");
 long commerceOrderId = (long)request.getAttribute("liferay-commerce:currency-selector:commerceOrderId");
-JSONArray commerceOrderTypes = (long)request.getAttribute("liferay-commerce:currency-selector:commerceOrderTypes");
+JSONArray commerceOrderTypes = (JSONArray)request.getAttribute("liferay-commerce:currency-selector:commerceOrderTypes");
 %>

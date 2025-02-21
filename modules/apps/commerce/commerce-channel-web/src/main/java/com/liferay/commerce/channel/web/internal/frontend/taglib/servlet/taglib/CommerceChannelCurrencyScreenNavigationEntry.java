@@ -41,10 +41,11 @@ public class CommerceChannelCurrencyScreenNavigationEntry
 		return getCategoryKey();
 	}
 
-	@Override
-	public boolean isVisible(User user, CommerceChannel context) {
-		return FeatureFlagManagerUtil.isEnabled("LPD-34908");
-	}
+//TODO
+//	@Override
+//	public boolean isVisible(User user, CommerceChannel context) {
+//		return FeatureFlagManagerUtil.isEnabled("LPD-34908");
+//	}
 
 	@Override
 	public void render(
