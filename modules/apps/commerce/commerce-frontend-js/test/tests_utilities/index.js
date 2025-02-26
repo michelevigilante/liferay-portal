@@ -7,6 +7,29 @@ export function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
+export function getRandomString(length = 10) {
+	const chars =
+		'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let randomString = '';
+	for (let i = 0; i < length; i++) {
+		randomString += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+
+	return randomString;
+}
+
+export function getRandomSymbol(length = 1) {
+	const symbols = '!£$%&/()=?*';
+	let randomSymbol = '';
+	for (let i = 0; i < length; i++) {
+		randomSymbol += symbols.charAt(
+			Math.floor(Math.random() * symbols.length)
+		);
+	}
+
+	return randomSymbol;
+}
+
 export function processFakeRequestData(url, items, queriedItems) {
 	url = new URL(url, Liferay.ThemeDisplay.getPortalURL());
 

@@ -33,11 +33,11 @@ public class CommerceChannelCommerceCurrencyTableFDSView
 			_fdsTableSchemaBuilderFactory.create();
 
 		return fdsTableSchemaBuilder.add(
-			"currencyName", "name"
+			"name", "name"
 		).add(
-			"currencyCode", "code"
+			"code", "code"
 		).add(
-			"currencySymbol", "symbol"
+			"symbol", "symbol"
 		).build();
 	}
 

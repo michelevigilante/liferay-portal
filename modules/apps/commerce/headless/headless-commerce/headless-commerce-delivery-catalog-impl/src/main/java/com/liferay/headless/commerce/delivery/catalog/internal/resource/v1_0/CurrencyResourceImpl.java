@@ -10,6 +10,7 @@ import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.product.constants.CPField;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
+import com.liferay.commerce.product.service.CommerceChannelRelService;
 import com.liferay.headless.commerce.delivery.catalog.dto.v1_0.Currency;
 import com.liferay.headless.commerce.delivery.catalog.resource.v1_0.CurrencyResource;
 import com.liferay.portal.kernel.search.Field;
@@ -68,10 +69,6 @@ public class CurrencyResourceImpl extends BaseCurrencyResourceImpl {
 			Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		// TODO this is not exactly right. if there are no currency restrictions
-		// TODO at channel level, we should get the full list of available
-		// TODO currencies
-
 		return SearchUtil.search(
 			null,
 			booleanQuery -> {
@@ -80,9 +77,17 @@ public class CurrencyResourceImpl extends BaseCurrencyResourceImpl {
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
-				searchContext.setAttribute(
-					CPField.CHANNEL_IDS,
-					new long[] {commerceChannel.getCommerceChannelId()});
+				int count =
+					_commerceChannelRelService.
+						getCommerceChannelCommerceCurrenciesCount(
+							commerceChannel.getCommerceChannelId(), null);
+
+				if (count > 0) {
+					searchContext.setAttribute(
+						CPField.CHANNEL_IDS,
+						new long[] {commerceChannel.getCommerceChannelId()});
+				}
+
 				searchContext.setCompanyId(commerceChannel.getCompanyId());
 
 				if (Validator.isNotNull(search)) {
@@ -110,6 +115,9 @@ public class CurrencyResourceImpl extends BaseCurrencyResourceImpl {
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
+
+	@Reference
+	private CommerceChannelRelService _commerceChannelRelService;
 
 	@Reference
 	private CommerceCurrencyService _commerceCurrencyService;
