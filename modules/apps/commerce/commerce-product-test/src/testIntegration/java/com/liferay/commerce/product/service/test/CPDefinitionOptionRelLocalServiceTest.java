@@ -24,6 +24,7 @@ import com.liferay.commerce.product.service.CommerceCatalogLocalService;
 import com.liferay.commerce.product.test.util.CPTestUtil;
 import com.liferay.commerce.product.type.simple.constants.SimpleCPTypeConstants;
 import com.liferay.petra.lang.SafeCloseable;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.lazy.referencing.LazyReferencingThreadLocal;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -458,6 +459,68 @@ public class CPDefinitionOptionRelLocalServiceTest {
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_APPROVED,
 			cpDefinitionOptionRel.getStatus());
+	}
+
+	@Test
+	public void testGetOrAddEmptyCPDefinitionOptionRelWithEmptyCPOption()
+		throws Exception {
+
+		frutillaRule.scenario(
+			"Get or add an empty product definition option under an empty " +
+				"product option"
+		).given(
+			"An existing product and an empty product option stub, which " +
+				"carries no commerce option type"
+		).when(
+			"An empty product definition option is requested under it with a " +
+				"commerce option type of its own"
+		).then(
+			"The stub is created under the empty product option"
+		);
+
+		try (SafeCloseable safeCloseable =
+				LazyReferencingThreadLocal.setEnabledWithSafeCloseable(true)) {
+
+			CPOption cpOption = _cpOptionLocalService.getOrAddEmptyCPOption(
+				RandomTestUtil.randomString(), _serviceContext.getCompanyId(),
+				_serviceContext.getUserId());
+
+			Assert.assertEquals(
+				StringPool.BLANK, cpOption.getCommerceOptionTypeKey());
+
+			String externalReferenceCode = RandomTestUtil.randomString();
+
+			CPDefinition cpDefinition = CPTestUtil.addCPDefinition(
+				_commerceCatalog.getGroupId());
+
+			String commerceOptionTypeKey =
+				CPTestUtil.getDefaultCommerceOptionTypeKey(false);
+
+			CPDefinitionOptionRel cpDefinitionOptionRel =
+				_cpDefinitionOptionRelLocalService.
+					getOrAddEmptyCPDefinitionOptionRel(
+						externalReferenceCode, _serviceContext.getCompanyId(),
+						_serviceContext.getUserId(),
+						cpDefinition.getCPDefinitionId(),
+						cpOption.getCPOptionId(), commerceOptionTypeKey);
+
+			_cpDefinitionOptionRels.add(cpDefinitionOptionRel);
+
+			Assert.assertEquals(
+				WorkflowConstants.STATUS_EMPTY,
+				cpDefinitionOptionRel.getStatus());
+			Assert.assertEquals(
+				externalReferenceCode,
+				cpDefinitionOptionRel.getExternalReferenceCode());
+			Assert.assertEquals(
+				cpOption.getCPOptionId(),
+				cpDefinitionOptionRel.getCPOptionId());
+			Assert.assertEquals(
+				cpOption.getKey(), cpDefinitionOptionRel.getKey());
+			Assert.assertEquals(
+				commerceOptionTypeKey,
+				cpDefinitionOptionRel.getCommerceOptionTypeKey());
+		}
 	}
 
 	@Test
