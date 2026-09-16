@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -341,6 +342,21 @@ public class CPDefinitionServiceImpl extends CPDefinitionServiceBaseImpl {
 
 		return cpDefinitionLocalService.getDefaultImageCPAttachmentFileEntry(
 			cpDefinitionId);
+	}
+
+	@Override
+	public CPDefinition getOrAddEmptyCPDefinition(
+			String externalReferenceCode, String productTypeName, long groupId)
+		throws PortalException {
+
+		_checkCommerceCatalog(groupId, ActionKeys.UPDATE);
+
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		return cpDefinitionLocalService.getOrAddEmptyCPDefinition(
+			externalReferenceCode, productTypeName,
+			permissionChecker.getCompanyId(), permissionChecker.getUserId(),
+			groupId);
 	}
 
 	@Override

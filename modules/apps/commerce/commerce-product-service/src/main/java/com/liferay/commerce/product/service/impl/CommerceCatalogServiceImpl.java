@@ -16,6 +16,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -138,6 +139,25 @@ public class CommerceCatalogServiceImpl extends CommerceCatalogServiceBaseImpl {
 
 		return commerceCatalogPersistence.filterFindByCompanyId(
 			companyId, start, end);
+	}
+
+	@Override
+	public CommerceCatalog getOrAddEmptyCommerceCatalog(
+			String externalReferenceCode, String commerceCurrencyCode)
+		throws PortalException {
+
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		PortletResourcePermission portletResourcePermission =
+			_commerceCatalogModelResourcePermission.
+				getPortletResourcePermission();
+
+		portletResourcePermission.check(
+			permissionChecker, null, CPActionKeys.ADD_COMMERCE_CATALOG);
+
+		return commerceCatalogLocalService.getOrAddEmptyCommerceCatalog(
+			externalReferenceCode, commerceCurrencyCode,
+			permissionChecker.getCompanyId(), permissionChecker.getUserId());
 	}
 
 	@Override
