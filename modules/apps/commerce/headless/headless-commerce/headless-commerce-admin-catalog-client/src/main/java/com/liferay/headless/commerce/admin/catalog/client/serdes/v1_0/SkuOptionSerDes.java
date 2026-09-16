@@ -107,6 +107,35 @@ public class SkuOptionSerDes {
 			sb.append(skuOption.getOptionValueId());
 		}
 
+		if (skuOption.getParentOptionExternalReferenceCode() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"parentOptionExternalReferenceCode\": ");
+
+			sb.append("\"");
+
+			sb.append(
+				_escape(skuOption.getParentOptionExternalReferenceCode()));
+
+			sb.append("\"");
+		}
+
+		if (skuOption.getParentOptionFieldType() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"parentOptionFieldType\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(skuOption.getParentOptionFieldType()));
+
+			sb.append("\"");
+		}
+
 		if (skuOption.getValue() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -180,6 +209,25 @@ public class SkuOptionSerDes {
 				"optionValueId", String.valueOf(skuOption.getOptionValueId()));
 		}
 
+		if (skuOption.getParentOptionExternalReferenceCode() == null) {
+			map.put("parentOptionExternalReferenceCode", null);
+		}
+		else {
+			map.put(
+				"parentOptionExternalReferenceCode",
+				String.valueOf(
+					skuOption.getParentOptionExternalReferenceCode()));
+		}
+
+		if (skuOption.getParentOptionFieldType() == null) {
+			map.put("parentOptionFieldType", null);
+		}
+		else {
+			map.put(
+				"parentOptionFieldType",
+				String.valueOf(skuOption.getParentOptionFieldType()));
+		}
+
 		if (skuOption.getValue() == null) {
 			map.put("value", null);
 		}
@@ -222,6 +270,17 @@ public class SkuOptionSerDes {
 				return false;
 			}
 			else if (Objects.equals(jsonParserFieldName, "optionValueId")) {
+				return false;
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"parentOptionExternalReferenceCode")) {
+
+				return false;
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "parentOptionFieldType")) {
+
 				return false;
 			}
 			else if (Objects.equals(jsonParserFieldName, "value")) {
@@ -268,6 +327,23 @@ public class SkuOptionSerDes {
 				if (jsonParserFieldValue != null) {
 					skuOption.setOptionValueId(
 						Long.valueOf((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName,
+						"parentOptionExternalReferenceCode")) {
+
+				if (jsonParserFieldValue != null) {
+					skuOption.setParentOptionExternalReferenceCode(
+						(String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "parentOptionFieldType")) {
+
+				if (jsonParserFieldValue != null) {
+					skuOption.setParentOptionFieldType(
+						(String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "value")) {
@@ -362,4 +438,4 @@ public class SkuOptionSerDes {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:1389181346
+// LIFERAY-REST-BUILDER-HASH:-709415680

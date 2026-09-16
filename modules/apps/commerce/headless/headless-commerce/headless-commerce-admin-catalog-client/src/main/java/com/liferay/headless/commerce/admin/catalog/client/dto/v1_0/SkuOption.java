@@ -137,6 +137,53 @@ public class SkuOption implements Cloneable, Serializable {
 
 	protected Long optionValueId;
 
+	public String getParentOptionExternalReferenceCode() {
+		return parentOptionExternalReferenceCode;
+	}
+
+	public void setParentOptionExternalReferenceCode(
+		String parentOptionExternalReferenceCode) {
+
+		this.parentOptionExternalReferenceCode =
+			parentOptionExternalReferenceCode;
+	}
+
+	public void setParentOptionExternalReferenceCode(
+		UnsafeSupplier<String, Exception>
+			parentOptionExternalReferenceCodeUnsafeSupplier) {
+
+		try {
+			parentOptionExternalReferenceCode =
+				parentOptionExternalReferenceCodeUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String parentOptionExternalReferenceCode;
+
+	public String getParentOptionFieldType() {
+		return parentOptionFieldType;
+	}
+
+	public void setParentOptionFieldType(String parentOptionFieldType) {
+		this.parentOptionFieldType = parentOptionFieldType;
+	}
+
+	public void setParentOptionFieldType(
+		UnsafeSupplier<String, Exception> parentOptionFieldTypeUnsafeSupplier) {
+
+		try {
+			parentOptionFieldType = parentOptionFieldTypeUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String parentOptionFieldType;
+
 	public String getValue() {
 		return value;
 	}
@@ -190,4 +237,4 @@ public class SkuOption implements Cloneable, Serializable {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:1234365472
+// LIFERAY-REST-BUILDER-HASH:-1722287111

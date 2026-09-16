@@ -297,6 +297,103 @@ public class SkuOption implements Serializable {
 	private Supplier<Long> _optionValueIdSupplier;
 
 	@io.swagger.v3.oas.annotations.media.Schema(
+		description = "External reference code of the option this selection derives from, as opposed to `optionExternalReferenceCode`, which names the product option link. On read it mirrors that option's code. On write it is consulted only during an import, and only when neither the product option nor an option named by `key` exists yet. The option is then created as an empty stub so the product option can be created under it, and both are completed when the options themselves are imported.",
+		example = "AB-34098-789-N"
+	)
+	public String getParentOptionExternalReferenceCode() {
+		if (_parentOptionExternalReferenceCodeSupplier != null) {
+			parentOptionExternalReferenceCode =
+				_parentOptionExternalReferenceCodeSupplier.get();
+
+			_parentOptionExternalReferenceCodeSupplier = null;
+		}
+
+		return parentOptionExternalReferenceCode;
+	}
+
+	public void setParentOptionExternalReferenceCode(
+		String parentOptionExternalReferenceCode) {
+
+		this.parentOptionExternalReferenceCode =
+			parentOptionExternalReferenceCode;
+
+		_parentOptionExternalReferenceCodeSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setParentOptionExternalReferenceCode(
+		UnsafeSupplier<String, Exception>
+			parentOptionExternalReferenceCodeUnsafeSupplier) {
+
+		_parentOptionExternalReferenceCodeSupplier = () -> {
+			try {
+				return parentOptionExternalReferenceCodeUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField(
+		description = "External reference code of the option this selection derives from, as opposed to `optionExternalReferenceCode`, which names the product option link. On read it mirrors that option's code. On write it is consulted only during an import, and only when neither the product option nor an option named by `key` exists yet. The option is then created as an empty stub so the product option can be created under it, and both are completed when the options themselves are imported."
+	)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String parentOptionExternalReferenceCode;
+
+	@JsonIgnore
+	private Supplier<String> _parentOptionExternalReferenceCodeSupplier;
+
+	@io.swagger.v3.oas.annotations.media.Schema(
+		description = "Field type of the option this selection derives from, mirroring `fieldType` on that option. On write it is consulted only during an import, to give the product option created under an empty option a valid field type, and is then required alongside `parentOptionExternalReferenceCode`.",
+		example = "select"
+	)
+	public String getParentOptionFieldType() {
+		if (_parentOptionFieldTypeSupplier != null) {
+			parentOptionFieldType = _parentOptionFieldTypeSupplier.get();
+
+			_parentOptionFieldTypeSupplier = null;
+		}
+
+		return parentOptionFieldType;
+	}
+
+	public void setParentOptionFieldType(String parentOptionFieldType) {
+		this.parentOptionFieldType = parentOptionFieldType;
+
+		_parentOptionFieldTypeSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setParentOptionFieldType(
+		UnsafeSupplier<String, Exception> parentOptionFieldTypeUnsafeSupplier) {
+
+		_parentOptionFieldTypeSupplier = () -> {
+			try {
+				return parentOptionFieldTypeUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField(
+		description = "Field type of the option this selection derives from, mirroring `fieldType` on that option. On write it is consulted only during an import, to give the product option created under an empty option a valid field type, and is then required alongside `parentOptionExternalReferenceCode`."
+	)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String parentOptionFieldType;
+
+	@JsonIgnore
+	private Supplier<String> _parentOptionFieldTypeSupplier;
+
+	@io.swagger.v3.oas.annotations.media.Schema(
 		description = "Stable string key of the option value chosen for this option; on read the value is the option value's key.",
 		example = "red"
 	)
@@ -442,6 +539,39 @@ public class SkuOption implements Serializable {
 			sb.append(optionValueId);
 		}
 
+		String parentOptionExternalReferenceCode =
+			getParentOptionExternalReferenceCode();
+
+		if (parentOptionExternalReferenceCode != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"parentOptionExternalReferenceCode\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(parentOptionExternalReferenceCode));
+
+			sb.append("\"");
+		}
+
+		String parentOptionFieldType = getParentOptionFieldType();
+
+		if (parentOptionFieldType != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"parentOptionFieldType\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(parentOptionFieldType));
+
+			sb.append("\"");
+		}
+
 		String value = getValue();
 
 		if (value != null) {
@@ -580,4 +710,4 @@ public class SkuOption implements Serializable {
 	private Map<String, Serializable> _extendedProperties;
 
 }
-// LIFERAY-REST-BUILDER-HASH:2003290456
+// LIFERAY-REST-BUILDER-HASH:-1197524160
