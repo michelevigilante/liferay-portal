@@ -253,6 +253,14 @@ public class CPDefinitionServiceUtil {
 			cpDefinitionId);
 	}
 
+	public static CPDefinition getOrAddEmptyCPDefinition(
+			String externalReferenceCode, String productTypeName, long groupId)
+		throws PortalException {
+
+		return getService().getOrAddEmptyCPDefinition(
+			externalReferenceCode, productTypeName, groupId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -446,4 +454,4 @@ public class CPDefinitionServiceUtil {
 			CPDefinitionServiceUtil.class, CPDefinitionService.class);
 
 }
-// LIFERAY-SERVICE-BUILDER-HASH:-1997285736
+// LIFERAY-SERVICE-BUILDER-HASH:-124447936
