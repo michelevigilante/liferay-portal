@@ -1396,8 +1396,8 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 						CPInstance.class.getName(), sku.getCustomFields()));
 
 				CPInstance cpInstance = SkuUtil.addOrUpdateCPInstance(
-					_cpInstanceService, sku, cpDefinition,
-					_cpDefinitionOptionRelService,
+					_cpInstanceService, sku.getExternalReferenceCode(), sku,
+					cpDefinition, _cpDefinitionOptionRelService,
 					_cpDefinitionOptionValueRelService, _cpOptionService,
 					serviceContext);
 

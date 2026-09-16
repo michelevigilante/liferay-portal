@@ -58,8 +58,8 @@ import java.util.Objects;
 public class SkuUtil {
 
 	public static CPInstance addOrUpdateCPInstance(
-			CPInstanceService cpInstanceService, Sku sku,
-			CPDefinition cpDefinition,
+			CPInstanceService cpInstanceService, String externalReferenceCode,
+			Sku sku, CPDefinition cpDefinition,
 			CPDefinitionOptionRelService cpDefinitionOptionRelService,
 			CPDefinitionOptionValueRelService cpDefinitionOptionValueRelService,
 			CPOptionService cpOptionService, ServiceContext serviceContext)
@@ -213,7 +213,7 @@ public class SkuUtil {
 		}
 
 		return cpInstanceService.addOrUpdateCPInstance(
-			sku.getExternalReferenceCode(), cpDefinition.getCPDefinitionId(),
+			externalReferenceCode, cpDefinition.getCPDefinitionId(),
 			cpDefinition.getGroupId(), sku.getSku(), sku.getGtin(),
 			sku.getManufacturerPartNumber(),
 			GetterUtil.get(sku.getPurchasable(), false),
@@ -283,9 +283,22 @@ public class SkuUtil {
 				cpDefinition.getCompanyId(), skuOption.getKey());
 
 			if (cpOption == null) {
+				if (Validator.isNull(
+						skuOption.getParentOptionExternalReferenceCode())) {
+
+					return cpDefinitionOptionRelService.
+						getCPDefinitionOptionRelByExternalReferenceCode(
+							externalReferenceCode, cpDefinition.getCompanyId());
+				}
+
+				cpOption = cpOptionService.getOrAddEmptyCPOption(
+					skuOption.getParentOptionExternalReferenceCode());
+
 				return cpDefinitionOptionRelService.
-					getCPDefinitionOptionRelByExternalReferenceCode(
-						externalReferenceCode, cpDefinition.getCompanyId());
+					getOrAddEmptyCPDefinitionOptionRel(
+						externalReferenceCode, cpDefinition.getCPDefinitionId(),
+						cpOption.getCPOptionId(),
+						skuOption.getParentOptionFieldType());
 			}
 
 			return cpDefinitionOptionRelService.
